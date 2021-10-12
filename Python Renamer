@@ -1,0 +1,93 @@
+import os
+import fnmatch
+import glob, os
+import exifread
+from pathlib import Path
+
+rep = r"C:\Users\Name\Downloads\essai"
+
+selection = "*.jpg"
+
+lst_exif = ("EXIF DateTimeOriginal",
+            "EXIF FocalLength")
+images = glob.glob(rep+os.sep+"*.jpg")
+treats = glob.glob(rep+os.sep+"*.xmp")
+
+print("images : ",images)
+print("treats : ", treats)
+i=0
+
+for image in images:
+    nfc = os.path.join(rep, image)
+    nft = rep + os.sep+Path(nfc).stem +".JPG.xmp"
+
+    print("nft : ",nft)
+    print("nfc : ",nfc)
+    fileimage = open(image, 'rb')
+    tags = exifread.process_file(fileimage)
+    fileimage.close()
+
+    RadicalBrut = str(tags.get("EXIF DateTimeOriginal"))
+    print("rdbrut", RadicalBrut)
+    new_RadicalBrut = str((RadicalBrut.replace(':', '-')).replace(" ","_"))
+    #print("nrad:",new_RadicalBrut[4:8])
+
+    if new_RadicalBrut[5:7]=="01":
+        print("janvier !")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Jan_" +new_RadicalBrut[8:]
+        print("radical:",radical)
+    elif new_RadicalBrut[5:7]=="02":
+        print("fevrier")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Fev_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="03":
+        print("Mars")
+        radical = "Sony_" + new_RadicalBrut[0:4] + -"_Mars_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="04":
+        print("Avril")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Avr_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="05":
+        print("Mai")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Mai_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="06":
+        print("Juin")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Juin_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="07":
+        print("Juillet")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Jui_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="08":
+        print("Août")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Août_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="09":
+        print("Septembre")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Sep_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="10":
+        print("Octobre")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Oct_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="11":
+        print("Novembre")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Nov_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    elif new_RadicalBrut[5:7]=="12":
+        print("décembre")
+        radical = "Sony_" + new_RadicalBrut[0:4] + "_Dec_" + new_RadicalBrut[8:]
+        print("radical:", radical)
+    else:
+        print("heiin ?")
+
+    radical = str((radical.replace('-', '')))
+    print("radical : ",radical)
+
+    os.rename(nfc, os.path.join(rep, radical + str(i)) + ".jpg")
+    os.rename(nft, os.path.join(rep, radical +str(i))+ ".jpg.xmp")
+    i=i+1
+
+    print("fait :", i)
